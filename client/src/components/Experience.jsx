@@ -109,7 +109,7 @@ const Experience = ({ experience }) => {
         .timeline-badge {
           position: absolute;
           left: -50px;
-          top: 10px;
+          top: 0px;
           width: 36px;
           height: 36px;
           border-radius: 50%;

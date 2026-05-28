@@ -103,10 +103,11 @@ const App = () => {
               <a href="#hero" className="active-link">Home</a>
               <a href="#experience">Experience</a>
               <a href="#skills">Skills</a>
+              <a href="#contact">Contact</a>
             </nav>
 
             <div className="nav-actions">
-              <a href="#contact" className="nav-btn">Contact</a>
+              
               
               {/* Mobile menu trigger */}
               <button 
@@ -163,7 +164,7 @@ const App = () => {
         <footer>
           <div className="content-wrapper footer-content">
             <p>© {new Date().getFullYear()} Ganeshbabu Kannan. All Rights Reserved.</p>
-            <p className="footer-credits">Designed with modern, responsive color layouts.</p>
+            
           </div>
         </footer>
 
@@ -304,7 +305,7 @@ const App = () => {
 
         .footer-content {
           display: flex;
-          justify-content: space-between;
+          justify-content: center;
           align-items: center;
           font-size: 0.85rem;
           color: var(--text-secondary);

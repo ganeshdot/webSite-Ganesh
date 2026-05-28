@@ -1,6 +1,6 @@
 export const resumeData = {
   personalInfo: {
-    name: "Ganeshbabu Kannan",
+    name: "Ganeshbabu",
     title: "Senior Front-End Developer | DevOps Engineer",
     email: "ganeshbabu.k111@gmail.com",
     phone: ["+91-95972-33217", "+91-98845-65603"],
