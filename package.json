@@ -1,0 +1,16 @@
+{
+  "name": "ganeshbabu-portfolio-workspace",
+  "version": "1.0.0",
+  "description": "Monorepo workspace for Ganeshbabu Kannan's portfolio website",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install --prefix client && npm install --prefix server",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run start --prefix server\" \"npm run dev --prefix client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

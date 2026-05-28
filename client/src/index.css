@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* Light Mode Solar Themes */
+:root {
+  --transition-speed: 1.2s;
+  --transition-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+.theme-sunrise {
+  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(255, 126, 95, 0.12) 0%, rgba(255, 255, 255, 1) 60%), radial-gradient(circle at 90% 90%, rgba(254, 180, 123, 0.1) 0%, rgba(255, 255, 255, 1) 60%);
+  --accent-color: #f97316; /* Soft warm orange */
+  --accent-secondary: #fdba74;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --card-bg: #ffffff;
+  --card-border: rgba(249, 115, 22, 0.1);
+  --glow-color: rgba(249, 115, 22, 0.12);
+  --stat-bg: rgba(249, 115, 22, 0.06);
+}
+
+.theme-day {
+  /* Matching the exact colors in the screenshot: Lavender to Mint/Cyan soft gradients on white */
+  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.18) 0%, rgba(255, 255, 255, 1) 50%), radial-gradient(circle at 90% 90%, rgba(34, 211, 238, 0.15) 0%, rgba(255, 255, 255, 1) 50%);
+  --accent-color: #a855f7; /* Vibrant Purple */
+  --accent-secondary: #c084fc;
+  --text-primary: #111827; /* Dark Charcoal */
+  --text-secondary: #4b5563; /* Slate Grey */
+  --card-bg: #ffffff;
+  --card-border: rgba(168, 85, 247, 0.08);
+  --glow-color: rgba(168, 85, 247, 0.15);
+  --stat-bg: #f3e8ff; /* Flat lavender stat background */
+}
+
+.theme-sunset {
+  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, rgba(255, 255, 255, 1) 50%), radial-gradient(circle at 90% 90%, rgba(124, 58, 237, 0.12) 0%, rgba(255, 255, 255, 1) 50%);
+  --accent-color: #ec4899; /* Sunset Pink */
+  --accent-secondary: #a78bfa;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --card-bg: #ffffff;
+  --card-border: rgba(236, 72, 153, 0.08);
+  --glow-color: rgba(236, 72, 153, 0.12);
+  --stat-bg: rgba(236, 72, 153, 0.06);
+}
+
+.theme-night {
+  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, rgba(250, 250, 250, 1) 50%), radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.12) 0%, rgba(250, 250, 250, 1) 50%);
+  --accent-color: #6366f1; /* Indigo */
+  --accent-secondary: #60a5fa;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --card-bg: #ffffff;
+  --card-border: rgba(99, 102, 241, 0.08);
+  --glow-color: rgba(99, 102, 241, 0.12);
+  --stat-bg: rgba(99, 102, 241, 0.06);
+}
+
+/* Reset and Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-body);
+  background: #ffffff;
+  color: var(--text-primary);
+  scroll-behavior: smooth;
+}
+
+.dynamic-mesh-bg {
+  background: var(--bg-gradient);
+}
+
+/* Smooth transitions */
+body, 
+section, 
+header, 
+footer, 
+a, 
+button, 
+div, 
+input, 
+textarea,
+span,
+h1, h2, h3, h4 {
+  transition: background var(--transition-speed) var(--transition-bezier),
+              background-color var(--transition-speed) var(--transition-bezier),
+              color var(--transition-speed) var(--transition-bezier),
+              border-color var(--transition-speed) var(--transition-bezier),
+              box-shadow var(--transition-speed) var(--transition-bezier);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Layout */
+.app-container {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Navigation Header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Logo with circle badge matching screen */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.logo-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 10px var(--glow-color);
+}
+
+.logo-text {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.45rem;
+  color: #111827;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text-primary);
+}
+
+.nav-links a.active-link {
+  color: #ffffff;
+  background: var(--accent-color);
+  padding: 0.5rem 1.1rem;
+  border-radius: 6px;
+}
+
+/* Solid Purple Buttons (Contact & CTAs) */
+.nav-btn {
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.3rem;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px var(--glow-color);
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: var(--accent-color);
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--glow-color);
+}
+
+/* Glassmorphism Card Style (Flat & Light) */
+.glass-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01);
+  padding: 2.5rem;
+}
+
+/* Section styling */
+section {
+  padding: 110px 0;
+  position: relative;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 3.5rem;
+  text-align: center;
+  color: #111827;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent-color);
+}
+
+/* Responsive utilities */
+@media (max-width: 968px) {
+  .section-title {
+    font-size: 2.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    height: 70px;
+  }
+  .nav-links {
+    display: none;
+  }
+  section {
+    padding: 70px 0;
+  }
+}
