@@ -5,6 +5,8 @@ const ContactForm = ({ serverUrl }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    company: '',
     subject: '',
     message: ''
   });
@@ -41,7 +43,7 @@ const ContactForm = ({ serverUrl }) => {
 
       if (response.ok) {
         setStatus({ loading: false, success: true, error: null });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
       } else {
         setStatus({ loading: false, success: false, error: data.error || 'Failed to submit.' });
       }
@@ -53,7 +55,7 @@ const ContactForm = ({ serverUrl }) => {
         success: true, 
         error: 'Message saved locally (Server is offline, but we logged it successfully!).' 
       });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
     }
   };
 
@@ -114,6 +116,31 @@ const ContactForm = ({ serverUrl }) => {
                     onChange={handleChange}
                     placeholder="john@example.com"
                     required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group-row">
+                <div className="form-group">
+                  <label htmlFor="phone">Contact Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="e.g. +91 98765 43210"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="company">Company Name</label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    placeholder="e.g. Acme Corp"
                   />
                 </div>
               </div>
@@ -223,7 +250,7 @@ const ContactForm = ({ serverUrl }) => {
 
         .info-card {
           background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid #f1f1f1;
           padding: 1.2rem;
           border-radius: 12px;
           display: flex;
@@ -282,7 +309,7 @@ const ContactForm = ({ serverUrl }) => {
         .form-group input,
         .form-group textarea {
           background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid #f1f1f1;
           border-radius: 10px;
           padding: 0.8rem 1rem;
           color: var(--text-primary);

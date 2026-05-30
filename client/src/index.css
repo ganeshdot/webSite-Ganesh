@@ -9,8 +9,9 @@
 }
 
 .theme-sunrise {
-  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(255, 126, 95, 0.12) 0%, rgba(255, 255, 255, 1) 60%), radial-gradient(circle at 90% 90%, rgba(254, 180, 123, 0.1) 0%, rgba(255, 255, 255, 1) 60%);
-  --accent-color: #f97316; /* Soft warm orange */
+  --bg-color: #ffffff;
+  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(255, 126, 95, 0.15) 0%, rgba(255, 255, 255, 1) 60%), radial-gradient(circle at 90% 90%, rgba(254, 180, 123, 0.1) 0%, rgba(255, 255, 255, 1) 60%);
+  --accent-color: #f97316; /* Warm Orange */
   --accent-secondary: #fdba74;
   --text-primary: #111827;
   --text-secondary: #4b5563;
@@ -18,43 +19,21 @@
   --card-border: rgba(249, 115, 22, 0.1);
   --glow-color: rgba(249, 115, 22, 0.12);
   --stat-bg: rgba(249, 115, 22, 0.06);
-}
-
-.theme-day {
-  /* Matching the exact colors in the screenshot: Lavender to Mint/Cyan soft gradients on white */
-  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.18) 0%, rgba(255, 255, 255, 1) 50%), radial-gradient(circle at 90% 90%, rgba(34, 211, 238, 0.15) 0%, rgba(255, 255, 255, 1) 50%);
-  --accent-color: #a855f7; /* Vibrant Purple */
-  --accent-secondary: #c084fc;
-  --text-primary: #111827; /* Dark Charcoal */
-  --text-secondary: #4b5563; /* Slate Grey */
-  --card-bg: #ffffff;
-  --card-border: rgba(168, 85, 247, 0.08);
-  --glow-color: rgba(168, 85, 247, 0.15);
-  --stat-bg: #f3e8ff; /* Flat lavender stat background */
+  --header-bg: rgba(255, 255, 255, 0.75);
 }
 
 .theme-sunset {
-  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, rgba(255, 255, 255, 1) 50%), radial-gradient(circle at 90% 90%, rgba(124, 58, 237, 0.12) 0%, rgba(255, 255, 255, 1) 50%);
-  --accent-color: #ec4899; /* Sunset Pink */
+  --bg-color: #0a0a0c;
+  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.15) 0%, rgba(10, 10, 12, 1) 60%), radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.1) 0%, rgba(10, 10, 12, 1) 60%);
+  --accent-color: #f43f5e; /* Sunset Red/Rose */
   --accent-secondary: #a78bfa;
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --card-bg: #ffffff;
-  --card-border: rgba(236, 72, 153, 0.08);
-  --glow-color: rgba(236, 72, 153, 0.12);
-  --stat-bg: rgba(236, 72, 153, 0.06);
-}
-
-.theme-night {
-  --bg-gradient: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, rgba(250, 250, 250, 1) 50%), radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.12) 0%, rgba(250, 250, 250, 1) 50%);
-  --accent-color: #6366f1; /* Indigo */
-  --accent-secondary: #60a5fa;
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --card-bg: #ffffff;
-  --card-border: rgba(99, 102, 241, 0.08);
-  --glow-color: rgba(99, 102, 241, 0.12);
-  --stat-bg: rgba(99, 102, 241, 0.06);
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --card-bg: rgba(18, 18, 24, 0.75);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --glow-color: rgba(244, 63, 94, 0.2);
+  --stat-bg: rgba(255, 255, 255, 0.04);
+  --header-bg: rgba(10, 10, 12, 0.75);
 }
 
 /* Reset and Global Styles */
@@ -69,7 +48,7 @@ html, body {
   min-height: 100%;
   overflow-x: hidden;
   font-family: var(--font-body);
-  background: #ffffff;
+  /* background: var(--bg-color, #ffffff); */
   color: var(--text-primary);
   scroll-behavior: smooth;
 }
@@ -135,10 +114,10 @@ header {
   display: flex;
   align-items: center;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--header-bg, rgba(255, 255, 255, 0.7));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--card-border);
 }
 
 .nav-container {
@@ -178,7 +157,7 @@ header {
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.45rem;
-  color: #111827;
+  color: var(--text-primary);
 }
 
 .nav-links {
@@ -252,7 +231,7 @@ section {
   font-weight: 800;
   margin-bottom: 3.5rem;
   text-align: center;
-  color: #111827;
+  color: var(--text-primary);
   position: relative;
 }
 

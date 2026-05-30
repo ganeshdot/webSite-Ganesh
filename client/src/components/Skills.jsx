@@ -50,7 +50,7 @@ const Skills = ({ skills }) => {
           padding: 2.25rem 2rem;
           border: 1px solid var(--card-border);
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          background: #ffffff;
+          background: var(--card-bg);
         }
 
         .skill-card:hover {
@@ -78,8 +78,8 @@ const Skills = ({ skills }) => {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          background: rgba(0, 0, 0, 0.02);
-          border: 1px solid rgba(0, 0, 0, 0.04);
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--card-border);
           padding: 0.45rem 0.9rem;
           border-radius: 30px;
           transition: all 0.2s ease;

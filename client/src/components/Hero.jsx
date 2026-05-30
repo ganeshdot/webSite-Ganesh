@@ -105,7 +105,7 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
           font-family: var(--font-heading);
           font-size: 3.5rem;
           font-weight: 700;
-          color: #111827;
+          color: var(--text-primary);
           line-height: 1.15;
           letter-spacing: -1px;
           margin-bottom: 1.5rem;
@@ -124,7 +124,7 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
         }
 
         .hero-description-paragraph strong {
-          color: #111827;
+          color: var(--text-primary);
           font-weight: 600;
         }
 
@@ -142,9 +142,9 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
         }
 
         .cta-download-btn {
-          background: rgba(0, 0, 0, 0.03);
-          border: 1px solid rgba(0, 0, 0, 0.08);
-          color: #111827;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--card-border);
+          color: var(--text-primary);
           padding: 0.8rem 1.5rem;
           border-radius: 8px;
           font-family: var(--font-heading);
@@ -158,7 +158,7 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
         }
 
         .cta-download-btn:hover {
-          background: rgba(0, 0, 0, 0.06);
+          background: rgba(255, 255, 255, 0.08);
           border-color: var(--accent-color);
         }
 
@@ -186,7 +186,7 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
           font-family: var(--font-heading);
           font-size: 1.75rem;
           font-weight: 800;
-          color: #111827;
+          color: var(--text-primary);
           margin-bottom: 0.25rem;
         }
 
@@ -206,7 +206,8 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
         }
 
         .portrait-card {
-          background: #ffffff;
+          background: var(--card-bg);
+          border: 1px solid var(--card-border);
           border-radius: 28px;
           padding: 0;
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);

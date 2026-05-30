@@ -7,15 +7,15 @@ import Skills from './components/Skills';
 import ContactForm from './components/ContactForm';
 import Chatbot from './components/Chatbot';
 import ResumePDF from './components/ResumePDF';
+import MouseFollower from './components/MouseFollower';
 import { resumeData } from '../../server/data/resumeData.js'; // fallback local copy
-import { Menu, X, ArrowUp } from 'lucide-react';
+import { Menu, X, ArrowUp, Download } from 'lucide-react';
 
 const SERVER_URL = 'http://localhost:5001';
 
 const App = () => {
   const [data, setData] = useState(resumeData);
-  const [theme, setTheme] = useState('night');
-  const [isAuto, setIsAuto] = useState(true);
+  const [theme, setTheme] = useState('sunrise');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -36,30 +36,7 @@ const App = () => {
     fetchResume();
   }, []);
 
-  // Solar Theme cycle engine based on system clock (Local Time Sync)
-  useEffect(() => {
-    if (!isAuto) return;
 
-    const checkSolarTime = () => {
-      const hour = new Date().getHours();
-      
-      if (hour >= 6 && hour < 8) {
-        setTheme('sunrise'); // 6 AM - 8 AM
-      } else if (hour >= 8 && hour < 17) {
-        setTheme('day');     // 8 AM - 5 PM
-      } else if (hour >= 17 && hour < 19) {
-        setTheme('sunset');  // 5 PM - 7 PM
-      } else {
-        setTheme('night');   // 7 PM - 6 AM
-      }
-    };
-
-    checkSolarTime(); // Run immediately
-
-    // Check time every minute
-    const interval = setInterval(checkSolarTime, 60000);
-    return () => clearInterval(interval);
-  }, [isAuto]);
 
   // Handle scroll events for "back to top" and nav blur
   useEffect(() => {
@@ -85,6 +62,9 @@ const App = () => {
 
   return (
     <div className={`theme-${theme}`}>
+      {/* Mouse Glow Follower */}
+      <MouseFollower />
+
       {/* 3D background rendering */}
       <Background3D theme={theme} />
 
@@ -107,7 +87,13 @@ const App = () => {
             </nav>
 
             <div className="nav-actions">
-              
+              <button 
+                className="nav-btn cv-btn header-cv-btn" 
+                onClick={handleDownloadCV}
+              >
+                <Download size={16} />
+                <span>Resume</span>
+              </button>
               
               {/* Mobile menu trigger */}
               <button 
@@ -138,15 +124,8 @@ const App = () => {
           </button>
         </div>
 
-        {/* Solar Dial Theme Slider panel in top area */}
-        <div className="slider-dock">
-          <ThemeSlider 
-            theme={theme} 
-            setTheme={setTheme} 
-            isAuto={isAuto} 
-            setIsAuto={setIsAuto} 
-          />
-        </div>
+        {/* Floating Theme Selector */}
+        <ThemeSlider theme={theme} setTheme={setTheme} />
 
         {/* Main Sections */}
         <main>
@@ -248,15 +227,7 @@ const App = () => {
           color: var(--accent-color);
         }
 
-        /* Slider dock positioning */
-        .slider-dock {
-          position: relative;
-          z-index: 50;
-          margin-top: 100px;
-          margin-bottom: -50px;
-          padding: 0 1.5rem;
-          display: none;
-        }
+
 
         /* Back to top button style */
         .scroll-top-btn {
@@ -327,9 +298,6 @@ const App = () => {
           }
           .nav-actions .nav-btn {
             display: none; /* Hidden on header for mobile, placed inside menu drawer */
-          }
-          .slider-dock {
-            margin-top: 90px;
           }
           .footer-content {
             flex-direction: column;

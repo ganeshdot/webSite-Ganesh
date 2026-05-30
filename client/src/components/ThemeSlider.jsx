@@ -1,182 +1,258 @@
-import React from 'react';
-import { Sun, Moon, Sunrise, Sunset, Clock, RotateCcw } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Sunrise, Sunset, Palette, X } from 'lucide-react';
 
-const ThemeSlider = ({ theme, setTheme, isAuto, setIsAuto }) => {
-  
-  const themes = [
-    { id: 'sunrise', name: 'Sunrise', icon: Sunrise, color: 'var(--accent-color)' },
-    { id: 'day', name: 'Noon', icon: Sun, color: 'var(--accent-color)' },
-    { id: 'sunset', name: 'Sunset', icon: Sunset, color: 'var(--accent-color)' },
-    { id: 'night', name: 'Night', icon: Moon, color: 'var(--accent-color)' }
-  ];
+const ThemeSlider = ({ theme, setTheme }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef(null);
+
+  // Close popover when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const toggleTheme = (selectedTheme) => {
+    setTheme(selectedTheme);
+    setIsOpen(false);
+  };
+
+  const ActiveIcon = theme === 'sunrise' ? Sunrise : Sunset;
 
   return (
-    <div className="theme-selector-container">
-      <div className="theme-selector-header">
-        <div className="selector-title">
-          <Clock size={16} className="title-icon" />
-          <span>Solar Core Theme</span>
-        </div>
-        <button 
-          className={`auto-toggle-btn ${isAuto ? 'active' : ''}`}
-          onClick={() => setIsAuto(!isAuto)}
-          title={isAuto ? "Switch to Manual Mode" : "Switch to Sync with Local Time"}
-        >
-          {isAuto ? 'Local Time Sync' : 'Manual Mode'}
-        </button>
-      </div>
+    <div className="floating-theme-container" ref={popoverRef}>
+      {/* Floating Action Button */}
+      <button 
+        className={`floating-theme-btn theme-${theme}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Change Theme"
+      >
+        <ActiveIcon size={22} className="theme-btn-icon" />
+        <Palette size={12} className="palette-sub-icon" />
+      </button>
 
-      <div className="solar-timeline">
-        <div className="timeline-bar" />
-        {themes.map((t) => {
-          const Icon = t.icon;
-          const isActive = theme === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => {
-                setIsAuto(false);
-                setTheme(t.id);
-              }}
-              className={`timeline-node ${isActive ? 'active' : ''}`}
-              style={{ '--node-color': t.color }}
-            >
-              <div className="node-icon-wrapper">
-                <Icon size={18} />
-              </div>
-              <span className="node-label">{t.name}</span>
+      {/* Popover Panel */}
+      {isOpen && (
+        <div className="theme-popover-card glass-card">
+          <div className="popover-header">
+            <h4>Select Theme</h4>
+            <button className="close-popover" onClick={() => setIsOpen(false)}>
+              <X size={14} />
             </button>
-          );
-        })}
-      </div>
+          </div>
+
+          <div className="theme-options-grid">
+            <button 
+              className={`theme-option-btn sunrise-btn ${theme === 'sunrise' ? 'active' : ''}`}
+              onClick={() => toggleTheme('sunrise')}
+            >
+              <div className="option-icon-wrapper">
+                <Sunrise size={20} />
+              </div>
+              <div className="option-label-wrapper">
+                <span className="option-name">Sunrise</span>
+                <span className="option-desc">Light Theme</span>
+              </div>
+            </button>
+
+            <button 
+              className={`theme-option-btn sunset-btn ${theme === 'sunset' ? 'active' : ''}`}
+              onClick={() => toggleTheme('sunset')}
+            >
+              <div className="option-icon-wrapper">
+                <Sunset size={20} />
+              </div>
+              <div className="option-label-wrapper">
+                <span className="option-name">Sunset</span>
+                <span className="option-desc">Dark Theme</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
 
       <style>{`
-        .theme-selector-container {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 20px;
-          padding: 1.25rem;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          width: 100%;
-          max-width: 420px;
-          margin: 1.5rem auto;
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .theme-selector-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.25rem;
-        }
-
-        .selector-title {
+        .floating-theme-container {
+          position: fixed;
+          right: 24px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 9999;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          font-family: var(--font-heading);
-          font-size: 0.9rem;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-          color: var(--text-primary);
         }
 
-        .title-icon {
-          color: var(--accent-color);
-        }
-
-        .auto-toggle-btn {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: var(--text-secondary);
-          padding: 0.35rem 0.75rem;
-          border-radius: 12px;
-          font-size: 0.75rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .auto-toggle-btn:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: var(--text-primary);
-        }
-
-        .auto-toggle-btn.active {
-          background: var(--accent-color);
-          border-color: var(--accent-color);
-          color: #fff;
-          box-shadow: 0 2px 10px var(--glow-color);
-        }
-
-        .solar-timeline {
-          display: flex;
-          justify-content: space-between;
-          position: relative;
-          padding: 0.5rem 0.25rem;
-        }
-
-        .timeline-bar {
-          position: absolute;
-          top: 26px;
-          left: 10%;
-          width: 80%;
-          height: 2px;
-          background: rgba(255, 255, 255, 0.1);
-          z-index: 1;
-        }
-
-        .timeline-node {
-          background: none;
-          border: none;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.5rem;
-          cursor: pointer;
-          position: relative;
-          z-index: 2;
-          width: 60px;
-        }
-
-        .node-icon-wrapper {
-          width: 38px;
-          height: 38px;
+        .floating-theme-btn {
+          width: 50px;
+          height: 50px;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: var(--card-bg);
+          border: 1px solid var(--card-border);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 2px 5px rgba(0, 0, 0, 0.05);
+          color: var(--text-primary);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--text-secondary);
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          cursor: pointer;
+          position: relative;
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
         }
 
-        .timeline-node:hover .node-icon-wrapper {
-          color: var(--text-primary);
-          background: rgba(255, 255, 255, 0.08);
-          transform: scale(1.1);
-        }
-
-        .timeline-node.active .node-icon-wrapper {
-          background: var(--accent-color);
+        .floating-theme-btn:hover {
+          transform: scale(1.08);
           border-color: var(--accent-color);
-          color: #fff;
-          box-shadow: 0 0 15px var(--accent-color);
-          transform: scale(1.15);
+          box-shadow: 0 12px 30px var(--glow-color);
         }
 
-        .node-label {
-          font-size: 0.75rem;
-          font-weight: 500;
-          color: var(--text-secondary);
-          transition: color 0.3s ease;
+        .theme-btn-icon {
+          animation: slowSpin 10s linear infinite;
         }
 
-        .timeline-node.active .node-label {
+        @keyframes slowSpin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .palette-sub-icon {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+          color: var(--accent-color);
+          background: var(--card-bg);
+          border-radius: 50%;
+          padding: 1px;
+        }
+
+        .theme-popover-card {
+          position: absolute;
+          right: 68px;
+          background: var(--card-bg);
+          border: 1px solid var(--card-border);
+          padding: 1.25rem;
+          border-radius: 16px;
+          width: 240px;
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+          animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(15px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+          }
+        }
+
+        .popover-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid var(--card-border);
+          padding-bottom: 0.5rem;
+        }
+
+        .popover-header h4 {
+          font-family: var(--font-heading);
+          font-size: 0.95rem;
+          font-weight: 700;
           color: var(--text-primary);
+        }
+
+        .close-popover {
+          background: none;
+          border: none;
+          color: var(--text-secondary);
+          cursor: pointer;
+          padding: 2px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+        }
+
+        .close-popover:hover {
+          color: var(--text-primary);
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-options-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .theme-option-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid var(--card-border);
+          padding: 0.75rem;
+          border-radius: 12px;
+          cursor: pointer;
+          text-align: left;
+          width: 100%;
+          transition: all 0.2s ease;
+          color: var(--text-primary);
+        }
+
+        .theme-option-btn:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: var(--accent-color);
+        }
+
+        .theme-option-btn.active {
+          background: var(--stat-bg);
+          border-color: var(--accent-color);
+          box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .option-icon-wrapper {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--accent-color);
+        }
+
+        .option-label-wrapper {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .option-name {
+          font-family: var(--font-heading);
           font-weight: 600;
+          font-size: 0.85rem;
+        }
+
+        .option-desc {
+          font-size: 0.7rem;
+          color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+          .floating-theme-container {
+            right: 16px;
+          }
+          .theme-popover-card {
+            right: auto;
+            left: -250px;
+          }
         }
       `}</style>
     </div>
