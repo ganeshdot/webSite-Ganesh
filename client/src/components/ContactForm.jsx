@@ -274,9 +274,7 @@ const ContactForm = ({ serverUrl }) => {
           transition: color 0.3s ease;
         }
 
-        a.info-value:hover {
-          color: var(--accent-color);
-        }
+
 
         .contact-form-wrapper {
           border: 1px solid var(--card-border);
@@ -331,11 +329,33 @@ const ContactForm = ({ serverUrl }) => {
           width: auto;
           margin-top: 0.5rem;
           padding: 0.75rem 1.75rem;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .submit-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.6s ease;
+        }
+
+
+
+        .submit-btn:active {
+          transform: translateY(0) scale(0.98);
+          box-shadow: 0 2px 8px var(--glow-color);
         }
 
         .submit-btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+          transform: none;
         }
 
         .alert {

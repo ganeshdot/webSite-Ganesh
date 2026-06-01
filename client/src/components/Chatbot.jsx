@@ -223,23 +223,37 @@ const Chatbot = ({ serverUrl }) => {
           align-items: center;
           justify-content: center;
           box-shadow: 0 4px 20px var(--glow-color);
-          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           position: relative;
+          overflow: hidden;
+          animation: chatPulse 2s ease-in-out infinite;
         }
 
-        .chat-toggle-btn:hover {
-          transform: scale(1.08) translateY(-2px);
-          box-shadow: 0 6px 25px var(--glow-color);
+        @keyframes chatPulse {
+          0%, 100% { box-shadow: 0 4px 20px var(--glow-color); }
+          50% { box-shadow: 0 6px 30px var(--glow-color); }
+        }
+
+
+
+        .chat-toggle-btn:active {
+          transform: scale(0.98);
+          box-shadow: 0 2px 10px var(--glow-color);
         }
 
         .chat-toggle-btn.active {
-          transform: rotate(90deg);
+          animation: spinRotate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes spinRotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(90deg); }
         }
 
         .chat-badge {
           position: absolute;
-          top: -2px;
-          right: -2px;
+          top: 13px;
+          right: 8px;
           background: #ef4444;
           color: #fff;
           font-size: 0.65rem;
@@ -322,12 +336,19 @@ const Chatbot = ({ serverUrl }) => {
           color: var(--text-secondary);
           cursor: pointer;
           opacity: 0.7;
-          transition: all 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border-radius: 6px;
         }
 
-        .chat-close-btn:hover {
-          color: var(--text-primary);
-          opacity: 1;
+
+
+        .chat-close-btn:active {
+          transform: rotate(90deg) scale(0.95);
         }
 
         .chat-messages {
@@ -461,11 +482,7 @@ const Chatbot = ({ serverUrl }) => {
           transition: all 0.3s ease;
         }
 
-        .suggestion-chip:hover {
-          background: rgba(255, 255, 255, 0.07);
-          border-color: var(--accent-color);
-          color: var(--text-primary);
-        }
+
 
         .chat-input-bar {
           display: flex;
@@ -505,19 +522,39 @@ const Chatbot = ({ serverUrl }) => {
           justify-content: center;
           cursor: pointer;
           box-shadow: 0 2px 10px var(--glow-color);
-          transition: all 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          position: relative;
+          overflow: hidden;
         }
 
-        .send-btn:hover {
-          background: var(--accent-secondary);
-          transform: translateY(-1px);
+        .send-btn::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          transform: translate(-50%, -50%);
+          transition: width 0.6s, height 0.6s;
         }
+
+
+
+        .send-btn:active {
+          transform: translateY(0) scale(0.95);
+          box-shadow: 0 1px 5px var(--glow-color);
+        }
+
+
 
         .send-btn:disabled {
           background: rgba(255, 255, 255, 0.05);
           color: rgba(255, 255, 255, 0.2);
           box-shadow: none;
           cursor: not-allowed;
+          transform: none;
         }
 
         @media (max-width: 576px) {

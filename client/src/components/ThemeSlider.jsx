@@ -99,19 +99,20 @@ const ThemeSlider = ({ theme, setTheme }) => {
           justify-content: center;
           cursor: pointer;
           position: relative;
-          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
         }
 
-        .floating-theme-btn:hover {
-          transform: scale(1.08);
-          border-color: var(--accent-color);
-          box-shadow: 0 12px 30px var(--glow-color);
+
+
+        .floating-theme-btn:active {
+          transform: scale(0.95);
+          box-shadow: 0 5px 15px var(--glow-color);
         }
 
         .theme-btn-icon {
-          animation: slowSpin 10s linear infinite;
+          // animation: slowSpin 10s linear infinite;
         }
 
         @keyframes slowSpin {
@@ -178,12 +179,15 @@ const ThemeSlider = ({ theme, setTheme }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: all 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          width: 24px;
+          height: 24px;
         }
 
-        .close-popover:hover {
-          color: var(--text-primary);
-          background: rgba(255, 255, 255, 0.1);
+
+
+        .close-popover:active {
+          transform: rotate(90deg) scale(0.9);
         }
 
         .theme-options-grid {
@@ -203,19 +207,30 @@ const ThemeSlider = ({ theme, setTheme }) => {
           cursor: pointer;
           text-align: left;
           width: 100%;
-          transition: all 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           color: var(--text-primary);
+          position: relative;
+          overflow: hidden;
         }
 
-        .theme-option-btn:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: var(--accent-color);
+        .theme-option-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+          transition: left 0.5s ease;
         }
+
+
 
         .theme-option-btn.active {
           background: var(--stat-bg);
           border-color: var(--accent-color);
-          box-shadow: 0 0 10px var(--glow-color);
+          box-shadow: 0 0 12px var(--glow-color);
+          transform: scale(1.02);
         }
 
         .option-icon-wrapper {

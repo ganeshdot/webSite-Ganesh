@@ -65,12 +65,18 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
 
         {/* Right Portrait column */}
         <div className="hero-image-content">
-          <div className="portrait-card">
-            <img 
-              src={developerAvatar} 
-              alt={personalInfo.name} 
-              className="portrait-img" 
-            />
+          <div className="avatar-flip-container">
+            <div className="avatar-flip-card">
+              <div className="avatar-flip-front">
+                <img 
+                  src={developerAvatar} 
+                  alt={personalInfo.name} 
+                  className="portrait-img" 
+                />
+              </div>
+
+              
+            </div>
           </div>
         </div>
 
@@ -154,12 +160,26 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          transition: all 0.2s ease;
+          transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+          position: relative;
+          overflow: hidden;
         }
 
-        .cta-download-btn:hover {
-          background: rgba(255, 255, 255, 0.08);
-          border-color: var(--accent-color);
+        .cta-download-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+          transition: left 0.5s ease;
+        }
+
+
+
+        .cta-download-btn:active {
+          transform: translateY(0);
         }
 
         /* Stats Blocks matching screenshot */
@@ -203,6 +223,187 @@ const Hero = ({ personalInfo, onChatClick, onDownloadClick }) => {
           display: flex;
           justify-content: flex-end;
           width: 100%;
+        }
+
+        .avatar-flip-container {
+          perspective: 1200px;
+          width: 100%;
+          max-width: 440px;
+          aspect-ratio: 3 / 4;
+          cursor: pointer;
+          position: relative;
+          transition: all 0.4s ease;
+        }
+
+
+
+        .avatar-flip-card {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+                      box-shadow 0.4s ease,
+                      border-color 0.6s ease;
+          transform-style: preserve-3d;
+          border-radius: 28px;
+          border: 1px solid var(--card-border);
+        }
+
+
+
+        .avatar-flip-front,
+        .avatar-flip-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 28px;
+          border: 1px solid var(--card-border);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+
+
+
+        .avatar-flip-front {
+          background: var(--card-bg);
+          transform: rotateY(0deg);
+          position: relative;
+        }
+
+        .avatar-flip-front::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          border-radius: 28px;
+          pointer-events: none;
+        }
+
+
+
+        .avatar-flip-back {
+          background: linear-gradient(135deg, var(--stat-bg), rgba(var(--accent-rgb, 249, 115, 22), 0.1));
+          border-color: var(--accent-color);
+          transform: rotateY(180deg);
+          padding: 2rem;
+        }
+
+        .theme-sunset .avatar-flip-back {
+          background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(167, 139, 250, 0.15));
+        }
+
+        .portrait-img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+        }
+
+
+
+        .flip-stats-content {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          width: 100%;
+          animation: statsSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .flip-title {
+          font-family: var(--font-heading);
+          font-size: 1.4rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          transition: all 0.3s ease;
+        }
+
+
+
+        .flip-subtitle {
+          font-size: 0.95rem;
+          color: var(--text-secondary);
+          font-weight: 500;
+          transition: color 0.3s ease;
+        }
+
+
+
+        .flip-stat-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+          margin: 1rem 0;
+        }
+
+        .flip-stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.75rem;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          border: 1px solid rgba(var(--accent-rgb, 249, 115, 22), 0.2);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: statsSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .flip-stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .flip-stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .flip-stat-item:nth-child(3) { animation-delay: 0.3s; }
+
+
+
+        .flip-stat-number {
+          font-family: var(--font-heading);
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: var(--accent-color);
+          transition: all 0.3s ease;
+        }
+
+
+
+        .flip-stat-label {
+          font-size: 0.65rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: var(--text-secondary);
+          letter-spacing: 0.5px;
+          transition: color 0.3s ease;
+        }
+
+
+
+        .flip-hint {
+          font-size: 0.75rem;
+          color: var(--text-secondary);
+          opacity: 0.8;
+          margin-top: 0.5rem;
+          font-style: italic;
+          transition: all 0.3s ease;
+          animation: fadeInUpAnimation 0.8s ease-out;
+        }
+
+        @keyframes fadeInUpAnimation {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 0.8;
+            transform: translateY(0);
+          }
         }
 
         .portrait-card {

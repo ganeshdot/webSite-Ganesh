@@ -32,10 +32,6 @@ export const resumeData = {
     {
       category: "Methodologies",
       items: ["Agile / Scrum", "Sprint Planning", "Code Review", "L2/L3 Production Support"]
-    },
-    {
-      category: "Other",
-      items: ["EDM (Electronic Direct Mail)", "FTP", "Containerisation", "Multi-tenant Architecture"]
     }
   ],
   experience: [

@@ -134,12 +134,25 @@ const Experience = ({ experience }) => {
           padding: 1.5rem 2rem;
           transition: all 0.4s ease;
           border: 1px solid var(--card-border);
+          perspective: 1000px;
+          position: relative;
+          cursor: pointer;
         }
 
-        .timeline-card:hover {
-          border-color: rgba(255, 255, 255, 0.15);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+
+        .timeline-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, transparent 0%, rgba(var(--accent-rgb, 249, 115, 22), 0.05) 100%);
+          border-radius: 12px;
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          pointer-events: none;
         }
+
+
 
         .card-header {
           display: flex;
@@ -196,11 +209,7 @@ const Experience = ({ experience }) => {
           transition: all 0.3s ease;
         }
 
-        .expand-toggle:hover {
-          color: var(--text-primary);
-          background: rgba(255, 255, 255, 0.08);
-          border-color: var(--accent-color);
-        }
+
 
         .card-content {
           max-height: 0;
@@ -271,12 +280,7 @@ const Experience = ({ experience }) => {
           transition: all 0.3s ease;
         }
 
-        .tech-tag:hover {
-          background: rgba(var(--accent-color), 0.1);
-          color: var(--accent-color);
-          border-color: var(--accent-color);
-          transform: translateY(-1px);
-        }
+
 
         @media (max-width: 768px) {
           .timeline-container {

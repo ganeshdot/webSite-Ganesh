@@ -11,6 +11,21 @@ const Background3D = ({ theme }) => {
       <div className="blob blob-2" />
       <div className="blob blob-3" />
 
+      {/* Animated background particles */}
+      <div className="bg-particles">
+        {[...Array(20)].map((_, i) => (
+          <div 
+            key={i} 
+            className="particle"
+            style={{
+              left: `${(i * 5) % 100}%`,
+              top: `${(i * 7) % 100}%`,
+              animationDelay: `${i * 0.15}s`
+            }}
+          />
+        ))}
+      </div>
+
       <style>{`
         .dynamic-mesh-container {
           position: fixed;
@@ -34,6 +49,7 @@ const Background3D = ({ theme }) => {
           background: var(--bg-gradient);
           opacity: 0.85;
           transition: background 1.5s ease-in-out;
+          z-index: 0;
         }
 
         /* Ambient animated blobs */
@@ -45,6 +61,7 @@ const Background3D = ({ theme }) => {
           mix-blend-mode: multiply;
           animation: floatAround 25s ease-in-out infinite alternate;
           transition: background 1.5s ease-in-out;
+          z-index: 2;
         }
 
         .theme-sunset .blob {
@@ -82,6 +99,30 @@ const Background3D = ({ theme }) => {
           animation-delay: -10s;
         }
 
+        /* Floating particles animation */
+        .bg-particles {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+        }
+
+        .particle {
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          border-radius: 50%;
+          background: var(--accent-color);
+          opacity: 0.1;
+          animation: floatParticles 8s linear infinite;
+          pointer-events: none;
+        }
+
+        .theme-sunset .particle {
+          background: var(--accent-secondary);
+          opacity: 0.08;
+        }
+
         @keyframes floatAround {
           0% {
             transform: translate(0px, 0px) scale(1) rotate(0deg);
@@ -94,6 +135,48 @@ const Background3D = ({ theme }) => {
           }
           100% {
             transform: translate(0px, 0px) scale(1) rotate(360deg);
+          }
+        }
+
+        @keyframes floatParticles {
+          0% {
+            transform: translateY(0px) translateX(0px) scale(1);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.1;
+          }
+          50% {
+            opacity: 0.15;
+            transform: translateY(-50px) translateX(30px) scale(1.2);
+          }
+          90% {
+            opacity: 0.05;
+          }
+          100% {
+            transform: translateY(-100px) translateX(0px) scale(0.8);
+            opacity: 0;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .mouse-gradient-spotlight {
+            width: 600px;
+            height: 600px;
+          }
+
+          .mouse-light-orb {
+            filter: blur(60px);
+          }
+
+          .orb-1 {
+            width: 300px;
+            height: 300px;
+          }
+
+          .orb-2 {
+            width: 250px;
+            height: 250px;
           }
         }
       `}</style>

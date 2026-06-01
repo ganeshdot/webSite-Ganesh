@@ -8,6 +8,7 @@ import ContactForm from './components/ContactForm';
 import Chatbot from './components/Chatbot';
 import ResumePDF from './components/ResumePDF';
 import MouseFollower from './components/MouseFollower';
+import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { resumeData } from '../../server/data/resumeData.js'; // fallback local copy
 import { Menu, X, ArrowUp, Download } from 'lucide-react';
 
@@ -19,6 +20,7 @@ const App = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   // Fetch resume data from server
   useEffect(() => {
@@ -42,10 +44,26 @@ const App = () => {
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
+      
+      // Update active nav link based on scroll position
+      const sections = ['hero', 'experience', 'skills', 'contact'];
+      for (let section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom > 150) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Initialize scroll animations
+  useScrollAnimation();
 
   // Trigger CV printable PDF generation
   const handleDownloadCV = () => {
@@ -58,6 +76,11 @@ const App = () => {
     if (chatToggle) {
       chatToggle.click();
     }
+  };
+
+  const handleNavClick = (section) => {
+    setActiveSection(section);
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -80,10 +103,10 @@ const App = () => {
             </div>
             
             <nav className="nav-links">
-              <a href="#hero" className="active-link">Home</a>
-              <a href="#experience">Experience</a>
-              <a href="#skills">Skills</a>
-              <a href="#contact">Contact</a>
+              <a href="#hero" className={activeSection === 'hero' ? 'active-link' : ''} onClick={() => handleNavClick('hero')}>Home</a>
+              <a href="#experience" className={activeSection === 'experience' ? 'active-link' : ''} onClick={() => handleNavClick('experience')}>Experience</a>
+              <a href="#skills" className={activeSection === 'skills' ? 'active-link' : ''} onClick={() => handleNavClick('skills')}>Skills</a>
+              <a href="#contact" className={activeSection === 'contact' ? 'active-link' : ''} onClick={() => handleNavClick('contact')}>Contact</a>
             </nav>
 
             <div className="nav-actions">
@@ -109,10 +132,10 @@ const App = () => {
 
         {/* Mobile Navigation Drawer */}
         <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
-          <a href="#hero" onClick={() => setMobileMenuOpen(false)}>About</a>
-          <a href="#experience" onClick={() => setMobileMenuOpen(false)}>Experience</a>
-          <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Skills</a>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          <a href="#hero" className={activeSection === 'hero' ? 'active-link' : ''} onClick={() => handleNavClick('hero')}>About</a>
+          <a href="#experience" className={activeSection === 'experience' ? 'active-link' : ''} onClick={() => handleNavClick('experience')}>Experience</a>
+          <a href="#skills" className={activeSection === 'skills' ? 'active-link' : ''} onClick={() => handleNavClick('skills')}>Skills</a>
+          <a href="#contact" className={activeSection === 'contact' ? 'active-link' : ''} onClick={() => handleNavClick('contact')}>Contact</a>
           <button 
             className="nav-btn" 
             onClick={() => {
@@ -178,11 +201,21 @@ const App = () => {
           color: var(--text-primary);
           cursor: pointer;
           padding: 0.25rem;
-          transition: transform 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          width: 40px;
+          height: 40px;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
         }
 
         .mobile-menu-trigger:hover {
-          transform: scale(1.05);
+          transform: scale(1.1) rotate(90deg);
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mobile-menu-trigger:active {
+          transform: scale(0.95);
         }
 
         /* Mobile nav menu */
@@ -227,6 +260,13 @@ const App = () => {
           color: var(--accent-color);
         }
 
+        .mobile-nav a.active-link {
+          color: #ffffff;
+          background: var(--accent-color);
+          padding: 0.5rem 1.1rem;
+          border-radius: 6px;
+        }
+
 
 
         /* Back to top button style */
@@ -246,18 +286,54 @@ const App = () => {
           cursor: pointer;
           opacity: 0;
           pointer-events: none;
-          transition: all 0.4s ease;
+          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           z-index: 999;
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
+          overflow: hidden;
+        }
+
+        .scroll-top-btn::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: var(--accent-color);
+          opacity: 0.2;
+          transform: translate(-50%, -50%);
         }
 
         .scroll-top-btn:hover {
           background: var(--accent-color);
           border-color: var(--accent-color);
           color: #fff;
-          transform: translateY(-3px);
-          box-shadow: 0 5px 15px var(--glow-color);
+          transform: translateY(-4px) scale(1.08);
+          box-shadow: 0 8px 20px var(--glow-color);
+        }
+
+        .scroll-top-btn:hover::before {
+          animation: rippleEffect 0.6s ease-out;
+        }
+
+        @keyframes rippleEffect {
+          0% {
+            width: 0;
+            height: 0;
+            opacity: 0.3;
+          }
+          100% {
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+          }
+        }
+
+        .scroll-top-btn:active {
+          transform: translateY(-2px) scale(0.95);
+          box-shadow: 0 3px 10px var(--glow-color);
         }
 
         .scroll-top-btn.visible {
@@ -267,8 +343,8 @@ const App = () => {
 
         /* Footer styling */
         footer {
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          background: rgba(0, 0, 0, 0.15);
+          border-top: 1px solid var(--card-border);
+          background: var(--header-bg, rgba(255, 255, 255, 0.7));
           padding: 2.5rem 0;
           margin-top: 5rem;
           text-align: center;
@@ -291,7 +367,7 @@ const App = () => {
 
         @media (max-width: 768px) {
           .mobile-menu-trigger {
-            display: block;
+            display: flex;
           }
           .nav-links {
             display: none;

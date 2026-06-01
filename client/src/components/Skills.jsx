@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const SkillCard = ({ category, items }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const skillCount = items.length;
+  const proficiency = Math.min(90 + (skillCount % 10), 100);
+
   return (
-    <div className="skill-card glass-card">
-      <h3 className="skill-cat-title">{category}</h3>
-      <div className="skill-list-grid">
-        {items.map((item, idx) => (
-          <div key={idx} className="skill-item-bubble">
-            <span className="skill-bullet" />
-            <span className="skill-name">{item}</span>
+    <div 
+      className="flip-card-container"
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div className={`flip-card ${isFlipped ? 'flipped' : ''}`}>
+        {/* Front of card */}
+        <div className="flip-card-front glass-card">
+          <h3 className="skill-cat-title">{category}</h3>
+          <div className="skill-list-grid">
+            {items.map((item, idx) => (
+              <div key={idx} className="skill-item-bubble">
+                <span className="skill-bullet" />
+                <span className="skill-name">{item}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Back of card */}
+        <div className="flip-card-back">
+          <div className="flip-title">{category}</div>
+          <div className="flip-text">
+            <p><strong>{skillCount} Skills</strong></p>
+            <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', opacity: 0.8 }}>
+              Proficiency: <strong>{proficiency}%</strong>
+            </p>
+            <p style={{ marginTop: '1rem', fontSize: '0.8rem', opacity: 0.7 }}>
+              Click to see skills
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -53,11 +80,7 @@ const Skills = ({ skills }) => {
           background: var(--card-bg);
         }
 
-        .skill-card:hover {
-          border-color: var(--accent-color);
-          transform: translateY(-4px);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 10px rgba(168, 85, 247, 0.04);
-        }
+
 
         .skill-cat-title {
           font-family: var(--font-heading);
@@ -85,10 +108,7 @@ const Skills = ({ skills }) => {
           transition: all 0.2s ease;
         }
 
-        .skill-item-bubble:hover {
-          background: rgba(168, 85, 247, 0.05);
-          border-color: var(--accent-color);
-        }
+
 
         .skill-bullet {
           width: 6px;
